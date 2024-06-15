@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Chat Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/chat.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+  
+
+</head>
+
+<body onload="joinRoom()">
+    
+   
+    <div id="ellipsis_toogle">
+        <div><a href="/create_group_chat" id="ellipsis_load"><i class="fa-solid fa-people-group"></i>Create a group</a></div>
+        <div><a href="#"><i class="fa-solid fa-thumbtack"></i>Pin</div></a>
+        <div><a href="#"><i class="fa-solid fa-box-archive"></i>Archive</div></a>
+        <div><a href="#"><i class="fa-solid fa-link"></i>Link friends</div></a>
+        <div><a href="#"><i class="fa-solid fa-share"></i>Invite a friend</div></a>
+        <div><a href="#"><i class="fa-solid fa-qrcode"></i>Scan QR code</div></a>
+        <div><a href="#"><i class="fa-solid fa-lock-closed"></i>Block</div></a>
+        <div><a href="#"><i class="fa-solid fa-bug"></i>Report</div></a>
+        <div class="spinner-container">
+            <div id="ellipsisSpinner" class="spinner"></div>
+        </div>
+        
+    </div>
+    
+
+
+    <div id="menubar">
+        {% if userdata %}
+            {% for user in userdata %}
+                <div id="menuicon">
+                    <p>
+                        <span>{{ user.Username }}<br>{{ user.Email }}</span> 
+                        {% if user.profile %}
+                            <span><a href="/profile"><i id="openchat"></i><img src="{{ user.profile }}" alt="Profile Picture"></a></span>
+                            <span id="ellipsis"><ion-icon id="toggleButton3" name="ellipsis-vertical"></ion-icon></span>
+
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/bald_placeholder.jpg') }}" alt="No profile picture found">
+                        {% endif %}
+                        <span><button id="logout"><a href="/login"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></button></span>
+                        <span><button id="theme">
+                            <div id="themeico">
+                            <div id="light ">
+                                <ion-icon name="sunny"></ion-icon>
+                            </div>
+                            <div id="dark">
+                                <ion-icon name="moon"></ion-icon>
+                            </div>
+                        </div>
+                        </button></span>
+                        <span><button id="icoset"><i class="fas fa-cogs"></i></button></span>
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div id="menu_clicks">
+            <div class="clicks">
+                <a href="/open_chat"><button class="click"><ion-icon name="chatbox-ellipses"></ion-icon> CHAT</button></a>
+                <a href="#"><button class="click"><ion-icon name="pulse-outline"></ion-icon> PASSION</button></a>
+                <a href="/download_more"><button class="click"><ion-icon name="download-outline"></ion-icon> DOWNLOAD</button></a>
+                <a href="/camera_more"><button class="click"><ion-icon name="camera-outline"></ion-icon> CAMERA</button></a>
+                <a href="#"><button class="click"><ion-icon name="videocam-outline"></ion-icon> REELS</button></a>
+                <a href="#"><button class="click"><ion-icon name="musical-notes-outline"></ion-icon> MUSIC</button></a>
+                <a href="#"><button class="click"><ion-icon name="settings-outline"></ion-icon> MEMORY</button></a>
+                <a href="#"> <button class="click"><ion-icon name="key-outline"></ion-icon> HISTORY</button></a>
+            </div>
+        </div>
+    </div>
+  <header>
+    <div class="container">
+        <div class="logo">
+            <h1>INJUSTICE</h1>
+        </div>
+        <nav id="nav" role="navigation">
+            <li><a href="#"><i  id="toggleButton" class="fas fa-bars menu-toggle"></i></a></li>
+            <div id="dropdown" class="dropdown">
+                <button style="font-size: 18px;padding-top:3px;" id="dropdownBtn" class="dropbtn"><ion-icon name="chevron-down-circle-outline"></ion-icon></button>
+                <div id="dropdownContent" class="dropdown-content">
+                    <a href="#"><i class="fas fa-pen"></i> Blog</a>
+                    <a href="/open_homepage"><i class="fas fa-home nav-icon"></i>Home</a>
+                    <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+                    <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+                    <a href="/login"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+<div class="chat_sec">
+  <div id="loginSection" class="log" >
+      <input type="hidden" id="usernameInput" value="{{ profile_email }}">
+      <input type="hidden" id="roomInput" value="{{ chat_code }}">
+      
+      <form id="join-form">
+        <input hidden id="username" autocomplete="off" value="{{profile_email}}" placeholder="Username"/><br>
+        <input hidden id="room" autocomplete="off" value="{{ group_room }}" placeholder="Room"/><button>Join</button>
+    </form>
+    <!--<h2>Current Room: <span id="current-room"></span></h2>-->
+    group:{{ group_room|safe }}
+    <h2>Current Room: <span id="current-room"></span></h2>
+    <form id="leave-form">
+        <button>Leave Room</button>
+    </form>
+    <ul id="messages"></ul>
+    <form id="chat-form">
+        <input id="input" autocomplete="off" placeholder="Message"/><br>
+        <input id="recipient" autocomplete="off" placeholder="Recipient (optional)"/><button>Send</button>
+    </form>
+     
+
+      <br><br>
+      <input type="hidden" id="recipientInput" value="{{ receivers_email }}">
+      
+      <aside class="sticky-footer"style=" background-color: transparent; ">
+      
+       
+        <div id="messages"></div>
+        
+    </aside>
+    
+    {% for message in messages %}
+        <div class="message {% if message.message == current_user_id %}sender{% else %}recipient{% endif %}">
+            {% if message.message == current_user_id %}
+                <span style="font-size:11px; font-style:italic;">(you)</span>
+            {% else %}
+                <span style="font-size:13px; font-style:italic;">{{ receiver_email }}</span>
+            {% endif %}
+            
+            {% if message.images is not none %}
+                <img src="{{ message.images }}" alt="Image">
+            {% endif %}
+            <div>{{ message.chat }}</div>
+
+            <div class="meta">
+                <span>{{ message.time }}</span> |
+                <span>{{ message.status }}</span>
+            </div>
+        </div>
+    {% endfor %}
+    <div id="messages">
+        <!-- New chats will be appended here -->
+    </div>
+</div>
+        
+   
+    
+      <input type="checkbox" name="t-success" id="t-success">
+      <div class="toast-item success">
+        <div class="toast success">
+          <label for="t-success" class="close"></label>
+          <h3>Success!</h3>
+          <p id="success-msg-content"></p>
+        </div>
+      </div>
+    
+      <input type="checkbox" name="t-error" id="t-error">
+      <div class="toast-item error">
+        <div class="toast error">
+          <label for="t-error" class="close"></label>
+          <h3>Error!</h3>
+          <p id="error-msg-content"></p>
+        </div>
+      </div>
+    
+      <input type="checkbox" name="t-warning" id="t-warning">
+      <div class="toast-item warning">
+        <div class="toast warning">
+          <label for="t-warning" class="close"></label>
+          <h3>Warning!</h3>
+          <p id="warning-msg-content"></p>
+        </div>
+      </div>
+    
+      <input type="checkbox" name="t-help" id="t-help">
+      <div class="toast-item help">
+        <div class="toast help">
+          <label for="t-help" class="close"></label>
+          <h3>Help!</h3>
+          <p id="help-msg-content"></p>
+        </div>
+      </div>
+
+      <div id="search_chat">
+          <input type="search" placeholder="Search...">
+          <button type="submit" id="search_button">search</button>
+      </div>
+  </div>
+  <div id="onchat">
+    {% if onchat %}
+        {% for user in onchat %}
+            <div class="user-container">
+                <img src="{{ user.pic }}" alt="Image" id="toggledButton2">
+                <div class="user-details">
+                    <span><ion-icon name="person-circle-outline"></ion-icon> {{ user.username }}</span>
+                    <span><ion-icon name="book-outline"></ion-icon> {{ user.bio }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>not found</p>
+    {% endif %}
+</div>
+{% if onchat %}
+        {% for user in onchat %}
+        <div id="expand">
+            <img src="{{ user.pic }}" alt="Image">
+            <div id="user_prof">
+                <p style="font-weight:bold;">{{ user.username }}<p>
+                <ion-icon name="book-outline"></ion-icon>{{ user.bio }}<br>
+            </div>
+            <div id="iconss">
+                <p id="iconcall">
+                    <a href="tel:{{user.Phone}}">
+                        <ion-icon name="call"></ion-icon>   
+                    </a>
+                </p>
+                                          
+                <p id="iconemail">
+                    <a href="mailto:{{user.Email}}">
+                        <ion-icon name="mail"></ion-icon>
+                    </a>
+                </p>
+                                        
+                <p id="iconmsg">
+                    <a href="/open_chat"><i id="openchat"></i><ion-icon name="chatbox-ellipses"></ion-icon></a>
+                </p>
+            </div>
+            <div id="contact_info">
+                  Phone Number <br>
+                <span><ion-icon name="call-outline"></ion-icon>{{ user.phone }}</span><br><br>
+                   Email<br>
+                <span><ion-icon name="mail-outline"></ion-icon>{{ user.email }}</span><br><br>
+                   Address<br>
+                <span> <ion-icon name="location-outline"></ion-icon>{{ user.address }}</span>
+            </div>
+        </div>
+        
+        {% endfor %}
+{% else %}
+    <p>not found</p>
+{% endif %}           
+
+
+  
+<div id="fold">
+    <div id="users">
+        {% if found_users %}
+            {% for user in found_users %}
+            <div class="user-card" id="user">
+                <h2>{{ user.Username }}</h2>
+                <p>Email: {{ user.Email }}</p>
+                <p>Gender: {{ user.Gender }}</p>
+                <p>Country: {{ user.Country }}</p>
+                {% if user.profile %}
+                <img src="{{ user.profile }}" onclick="expand(this)" alt="Image">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/bald placeholder.jpg') }}" alt="No profile picture found">
+                {% endif %}
+                <br>
+                <form action="/get_chat_id" method="post" onclick="joinRoom()">
+                  <input type="hidden" name="user_receiver_id" value="{{ user.user_id}}">
+                  <button id="text" type="submit"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></button>
+                
+              </form>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No users found.</p>
+        {% endif %}
+      </div>
+</div>
+
+
+<script>
+    const chat = document.getElementById('chatInput');
+
+    chat.addEventListener('mousemove', (event) => {
+        const boundingRect = chatInput.getBoundingClientRect();
+        const cursorY = event.clientY - boundingRect.top;
+        const scrollHeight = chatInput.scrollHeight - chatInput.clientHeight;
+
+        const scrollPosition = (cursorY / chatInput.clientHeight) * scrollHeight;
+        chat.scrollTop = scrollPosition;
+    });
+</script>
+
+<script>
+    const socket = io();
+    let currentRoom = '';
+    const currentUserId = '{{ current_user_id }}'; // Assuming you have this available
+    
+    socket.on('new_message', function(data) {
+        appendMessage(data, currentUserId);
+    });
+    
+    function joinRoom() {
+        const username = document.getElementById('usernameInput').value;
+        const room = document.getElementById('roomInput').value;
+        currentRoom = room;
+    
+        if (username && room) {
+            socket.emit('join', { username, room });
+        }
+    }
+    
+    function leaveRoom() {
+        const username = document.getElementById('usernameInput').value;
+        const room = currentRoom;
+    
+        if (username && room) {
+            socket.emit('leave', { username, room });
+        }
+    }
+    
+    function appendMessage(message, currentUserId) {
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message');
+    
+        if (message.sender_id == currentUserId) {
+            messageContainer.classList.add('sender');
+        } else {
+            messageContainer.classList.add('recipient');
+        }
+    
+        const messageContent = document.createElement('div');
+    
+        // Append text content first
+        const textNode = document.createTextNode(message.message_text);
+        messageContent.appendChild(textNode);
+    
+        if (message.message_file && message.message_file.startsWith('data:image/jpeg;base64,/')) {
+            const imageElement = document.createElement('img');
+            imageElement.src = message.message_file;
+            messageContent.appendChild(imageElement); // Append to messageContent without overwriting text content
+        }
+        else if (message.message_file && message.message_file.startsWith('data:video/mp4;base64,/')) {
+            const imageElement = document.createElement('video');
+            imageElement.src = message.message_file;
+            messageContent.appendChild(imageElement); // Append to messageContent without overwriting text content
+        }
+        
+       
+    
+        messageContainer.appendChild(messageContent);
+    
+        const metaContainer = document.createElement('div');
+        metaContainer.classList.add('meta');
+    
+        const senderSpan = document.createElement('span');
+        senderSpan.textContent = message.sender_id == currentUserId ? '(you)' : message.sender_id;
+        metaContainer.appendChild(senderSpan);
+    
+        metaContainer.appendChild(document.createTextNode(' | '));
+    
+        const timeSpan = document.createElement('span');
+        timeSpan.textContent = message.timestamp.split(' ')[1]; // Time
+        metaContainer.appendChild(timeSpan);
+    
+        metaContainer.appendChild(document.createTextNode(' | '));
+    
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = message.timestamp.split(' ')[0]; // Date
+        metaContainer.appendChild(dateSpan);
+    
+        messageContainer.appendChild(metaContainer);
+    
+        document.getElementById('messages').appendChild(messageContainer);
+    }
+    
+    function sendMessage() {
+        const sender = document.getElementById('usernameInput').value;
+        const recipient = document.getElementById('recipientInput').value;
+        const messageInput = document.getElementById('chatInput');
+        const fileInput = document.getElementById('imageUpload');
+    
+        const messageText = messageInput.textContent.trim();
+        const file = fileInput.files[0];
+    
+        if (sender && recipient) {
+            if (messageText || file) {
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('sender', sender);
+                    formData.append('recipient', recipient);
+                    formData.append('message', messageText);
+    
+                    fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const filePath = data.filePath;
+                            socket.emit('private_message', { sender, recipient, message: messageText, file: filePath });
+                            messageInput.innerHTML = '';
+                            fileInput.value = '';
+                        } else {
+                            alert('File upload failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('File upload failed');
+                    });
+                } else {
+                    socket.emit('private_message', { sender, recipient, message: messageText, file: null });
+                    messageInput.innerHTML = '';
+                }
+            } else {
+                alert('Please type a message or select a file.');
+            }
+        } else {
+            alert('Please choose a recipient .');
+        }
+    }
+    
+    function openEmojiPicker() {
+        const emojiButton = document.getElementById('emoji-button');
+        const picker = new EmojiPicker();
+        picker.listenOn(emojiButton);
+    }
+    
+    document.getElementById('imageUpload').addEventListener('change', handleFileUpload);
+    
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file && file.size <= 50 * 1024 * 1024) {  // Adjust to 50 MB limit
+            insertFile(URL.createObjectURL(file));
+        } else {
+            alert('File size exceeds 50 MB');
+        }
+    }
+    
+    function insertFile(filePath) {
+        const fileElement = document.createElement('img'); // Adjust this element type based on file type
+        fileElement.src = filePath;
+        document.getElementById('chatInput').appendChild(fileElement);
+    }
+    
+        
+</script>
+<script>
+    function toggleMenubarVisibility() {
+        var content = document.getElementById("menubar");
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+            // Add event listener for click anywhere on the screen
+            document.addEventListener("click", hideMenubarOnClickOutside);
+        } else {
+            content.style.display = "none";
+            // Remove event listener when menu bar is hidden
+            document.removeEventListener("click", hideMenubarOnClickOutside);
+        }
+    }
+
+    function hideMenubarOnClickOutside(event) {
+        var content = document.getElementById("menubar");
+        if (!content.contains(event.target) && event.target.id !== 'toggleButton') { // Check if the click is outside the menu bar
+            content.style.display = "none";
+            document.removeEventListener("click", hideMenubarOnClickOutside); // Remove the event listener
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleButton = document.getElementById("toggleButton");
+        toggleButton.addEventListener("click", toggleMenubarVisibility);
+    });
+</script>
+<script>
+    function toggleEllipsisVisibility() {
+        var content = document.getElementById("ellipsis_toogle");
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+            // Add event listener for click anywhere on the screen
+            document.addEventListener("click", hideEllipsisOnClickOutside);
+        } else {
+            content.style.display = "none";
+            // Remove event listener when menu bar is hidden
+            document.removeEventListener("click", hideEllipsisOnClickOutside);
+        }
+    }
+
+    function hideEllipsisOnClickOutside(event) {
+        var content = document.getElementById("ellipsis_toogle");
+        if (!content.contains(event.target) && event.target.id !== 'toggleButton3') { // Check if the click is outside the menu bar
+            content.style.display = "none";
+            document.removeEventListener("click", hideEllipsisOnClickOutside); // Remove the event listener
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleButton = document.getElementById("toggleButton3");
+        toggleButton.addEventListener("click", toggleEllipsisVisibility);
+    });
+</script>
+
+
+<script>
+    function toggleExpandVisibility() {
+        var content = document.getElementById("expand");
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+            // Add event listener for click anywhere on the screen
+            document.addEventListener("click", hideExpandOnClickOutside);
+        } else {
+            content.style.display = "none";
+            // Remove event listener when menu bar is hidden
+            document.removeEventListener("click", hideExpandOnClickOutside);
+        }
+    }
+
+    function hideExpandOnClickOutside(event) {
+        var content = document.getElementById("expand");
+        if (!content.contains(event.target) && event.target.id !== 'toggledButton2') { // Check if the click is outside the menu bar
+            content.style.display = "none";
+            document.removeEventListener("click", hideExpandOnClickOutside); // Remove the event listener
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleButton = document.getElementById("toggledButton2");
+        toggleButton.addEventListener("click", toggleExpandVisibility);
+    });
+</script>
+
+<script>
+    function expand(img) {
+        img.classList.toggle('expanded');
+    }
+
+    window.onscroll = function() {stickySide()};
+
+    const side = document.getElementById("side");
+    const sticky = side.offsetTop;
+
+    function stickySide() {
+        if (window.pageYOffset >= sticky) {
+            side.classList.add("sticky");
+        } else {
+            side.classList.remove("sticky");
+        }
+    }
+</script>
+<script>
+    var dropdownBtn = document.getElementById("dropdownBtn");
+    var dropdownContent = document.getElementById("dropdownContent");
+    dropdownBtn.addEventListener("click", function() {
+        dropdownContent.classList.toggle("show");
+    });
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+   
+    
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const spinnerContainer = document.querySelector('.spinner-container');
+    
+            const handleFormSubmit = (container) => {
+                const toggleButton3 = document.getElementById('ellipsis_load');
+                toggleButton3.addEventListener('click', function(event) {
+                    // Display the spinner container when ellipsis icon is clicked
+                    container.style.display = 'block';
+                });
+            };
+    
+            handleFormSubmit(spinnerContainer);
+    
+            // Hide the spinner container initially
+            spinnerContainer.style.display = 'none';
+        });
+    </script>
+    <script>
+        const successMsg = "{{ success_msg |safe }}";
+        const errorMsg = "{{ error_msg |safe }}";
+        const warningMsg = "{{ warning_msg |safe }}";
+        const helpMsg = "{{ help_msg |safe }}";
+    
+        if (successMsg) {
+            const successCheckbox = document.getElementById("t-success");
+            const successContent = document.getElementById("success-msg-content");
+            successContent.innerHTML = successMsg;
+            successCheckbox.checked = true;
+            setTimeout(() => {   
+                successCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (errorMsg) {
+            const errorCheckbox = document.getElementById("t-error");
+            const errorContent = document.getElementById("error-msg-content");
+            errorContent.innerHTML = errorMsg;
+            errorCheckbox.checked = true;
+            setTimeout(() => {   
+                errorCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (warningMsg) {
+            const warningCheckbox = document.getElementById("t-warning");
+            const warningContent = document.getElementById("warning-msg-content");
+            warningContent.innerHTML = warningMsg;
+            warningCheckbox.checked = true;
+            setTimeout(() => {   
+                warningCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (helpMsg) {
+            const helpCheckbox = document.getElementById("t-help");
+            const helpContent = document.getElementById("help-msg-content");
+            helpContent.innerHTML = helpMsg;
+            helpCheckbox.checked = true;
+            setTimeout(() => {   
+                helpCheckbox.checked = false;
+            }, 5000);
+        }
+      </script>
+    
+    
+      <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var socket = io();
+           
+            document.getElementById('join-form').addEventListener('submit', function(e){
+                e.preventDefault();
+                var username = document.getElementById('username').value;
+                var room = document.getElementById('room').value;
+                socket.emit('join', {username: username, room: room});
+                document.getElementById('current-room').innerText = room;
+                document.getElementById('username').disabled = true;
+                document.getElementById('room').disabled = true;
+                return false;
+            });
+
+            document.getElementById('leave-form').addEventListener('submit', function(e){
+                e.preventDefault();
+                var username = document.getElementById('username').value;
+                var room = document.getElementById('current-room').innerText;
+                socket.emit('leave', {username: username, room: room});
+                document.getElementById('current-room').innerText = '';
+                document.getElementById('username').disabled = false;
+                document.getElementById('room').disabled = false;
+                return false;
+            });
+
+            document.getElementById('chat-form').addEventListener('submit', function(e){
+                e.preventDefault();
+                var room = document.getElementById('current-room').innerText;
+                var msg = document.getElementById('input').value;
+                var recipient = document.getElementById('recipient').value;
+                var username = document.getElementById('username').value;
+                socket.emit('message', {room: room, msg: msg, recipient: recipient, sender: username});
+                document.getElementById('input').value = '';
+                return false;
+            });
+
+            socket.on('message', function(data){
+                var item = document.createElement('li');
+                item.textContent = data.msg;
+                document.getElementById('messages').appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        });
+    </script>
+   
+
+</body>
+</html>

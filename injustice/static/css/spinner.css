@@ -1,0 +1,49 @@
+body{
+    color:rgb(38, 33, 33);
+    background: transparent;
+}
+@property --a{
+    syntax:"<angle>";
+    inherits: true;
+    initial-value: 0deg;
+}
+@keyframes rotate {
+    from {
+      --a: 0deg;
+    }
+    to {
+      --a: 360deg;
+    }
+  }
+  
+#progress{
+    animation: rotate 1s linear infinite;
+    height: 90px;
+    aspect-ratio: 1/1;
+    background: conic-gradient(rgb(0, 255, 238) var(--a), rgb(3, 3, 63) var(--a));
+    border-radius: 50%;
+    position: relative;
+    transition: --a 2s linear;
+    --angle: 0deg;
+    /*initialvalue*/transform: rotate(var(--angle));
+    box-shadow: 1px 1px 20px rgb(3, 69, 249);
+    margin-left: 47%;
+    margin-top: 20%;
+    -webkit-animation: rotate 1s linear infinite;
+}
+#progress::after {
+    position: absolute;
+    content: "";
+    width: 50px;
+    height: 70px;
+    background: rgb(17, 9, 67);
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+  }
+#progress:hover{
+    --a: 360deg;
+}

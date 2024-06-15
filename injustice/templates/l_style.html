@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu-ratelog</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+  </head>
+  <body>
+    <div id="loginSection" class="log">
+    <p id="inform">CLICK + TO OPEN</p>
+    <ul class="menu">
+      <div class="menuToggle"><ion-icon name="add-outline"></ion-icon></div>
+      <li style="--i: 0; --clr: #ff2972">
+        <form action=""><a href="/open_homepage"><ion-icon name="home-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <form action=""><a href="#"><ion-icon name="settings-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <form action=""><a href="/open_chat"><ion-icon name="mail-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 3; --clr: #fe00f1">
+        <form action=""><a href="#"><ion-icon name="key-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 4; --clr: #00b0fe">
+        <form action=""><a href="/camera_more"><ion-icon name="camera-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 5; --clr: #fea600">
+        <form action="/download_more"><a href="/download_more"><ion-icon name="download-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 6; --clr: #a529ff">
+        <form action=""><a href="/profile"><ion-icon name="person-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <form action=""><a href="#"><ion-icon name="pulse-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 8; --clr: #01bdab">
+        <form action=""><a href="#"><ion-icon name="musical-notes-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 9; --clr: #01bdab">
+        <form action=""><a href="#"><ion-icon name="videocam-outline"></ion-icon></a></form>
+      </li>
+      <li style="--i: 10; --clr: #01bdab">
+        <form action=""><a href="#"><ion-icon name="mic-off-outline"></ion-icon></a></form>
+      </li>
+    </ul>
+    </div>div
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

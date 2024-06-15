@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ratelog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/s-login.css" />
+    <script src="../static/js/spinner.js"></script>
+</head>
+<body>
+    <input type="checkbox" name="t-success" id="t-success">
+    <div class="toast-item success">
+      <div class="toast success">
+        <label for="t-success" class="close"></label>
+        <h3>Success!</h3>
+        <p id="success-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-error" id="t-error">
+    <div class="toast-item error">
+      <div class="toast error">
+        <label for="t-error" class="close"></label>
+        <h3>Error!</h3>
+        <p id="error-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-warning" id="t-warning">
+    <div class="toast-item warning">
+      <div class="toast warning">
+        <label for="t-warning" class="close"></label>
+        <h3>Warning!</h3>
+        <p id="warning-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-help" id="t-help">
+    <div class="toast-item help">
+      <div class="toast help">
+        <label for="t-help" class="close"></label>
+        <h3>Help!</h3>
+        <p id="help-msg-content"></p>
+      </div>
+    </div>
+
+<div id="loginSection" class="log">
+    <aside>
+        <div style=' flex ' id="side">
+            <h1> WELCOME <br>BACK!</h1>
+            <p> login again , to this web<br> for more personal<br> benefits😘.</p>
+        </div>
+    </aside>
+    <section>
+        <form action="/login" method="post">
+            <h2>Login</h2>
+            <input type="email" id="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <br><button type="submit" id="login">Login</button>
+            <div id="loginSpinner" class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </form>
+        <p>Don't have an account?<a href="#" id="signupLink">SignUp</a></p>
+        <form action="/password" method="post">
+            <p>Forgot password?<button type="submit" id="recover"><u>Recover!</u></button></p>
+        </form>
+    </section>
+</div>
+
+<div id="signupSection" class="log hidden">
+    <aside>
+        <div id="side">
+            <h1> CREATE, <br>ACCOUNT!</h1>
+            <p> sign up, to start<br> gaining own<br> benefits.</p>
+        </div>
+    </aside>
+    <section>
+        <h2>SignUp</h2>
+        <form action="/signup" method="post">
+            <input type="text" id="name" name="name" placeholder="Username" required><br>
+            <input type="email" name="email" placeholder="Enter Email" required><br>
+            <input type="password" name="password" placeholder="Password" minlength="6" required><br>
+            <input type="password" name="confirmpassword" placeholder="Confirm Password" minlength="6" required><br>
+            <br><button type="submit" id="signup">SignUp</button>
+            <div id="signupSpinner" class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </form>
+        <p>Already have an account?<a href="#" id="loginLink">Login</a></p>
+    </section>
+</div>
+<script src="../static/js/s-login.js"></script>
+<script>
+    const loginSection = document.getElementById('loginSection');
+    const signupSection = document.getElementById('signupSection');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+
+    signupLink.addEventListener('click', function() {
+        loginSection.classList.add('hidden');
+        signupSection.classList.remove('hidden');
+    });
+
+    loginLink.addEventListener('click', function() {
+        signupSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+    });
+</script>
+<script>
+    const successMsg = "{{ success_msg |safe }}";
+    const errorMsg = "{{ error_msg |safe }}";
+    const warningMsg = "{{ warning_msg |safe }}";
+    const helpMsg = "{{ help_msg |safe }}";
+
+    if (successMsg) {
+        const successCheckbox = document.getElementById("t-success");
+        const successContent = document.getElementById("success-msg-content");
+        successContent.innerHTML = successMsg;
+        successCheckbox.checked = true;
+        setTimeout(() => {   
+            successCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (errorMsg) {
+        const errorCheckbox = document.getElementById("t-error");
+        const errorContent = document.getElementById("error-msg-content");
+        errorContent.innerHTML = errorMsg;
+        errorCheckbox.checked = true;
+        setTimeout(() => {   
+            errorCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (warningMsg) {
+        const warningCheckbox = document.getElementById("t-warning");
+        const warningContent = document.getElementById("warning-msg-content");
+        warningContent.innerHTML = warningMsg;
+        warningCheckbox.checked = true;
+        setTimeout(() => {   
+            warningCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (helpMsg) {
+        const helpCheckbox = document.getElementById("t-help");
+        const helpContent = document.getElementById("help-msg-content");
+        helpContent.innerHTML = helpMsg;
+        helpCheckbox.checked = true;
+        setTimeout(() => {   
+            helpCheckbox.checked = false;
+        }, 5000);
+    }
+  </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.querySelector('form[action="/login"]');
+        const signupForm = document.querySelector('form[action="/signup"]');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const signupSpinner = document.getElementById('signupSpinner');
+
+        const handleFormSubmit = (form, spinner) => {
+            form.addEventListener('submit', function(event) {
+                // Check if all inputs are filled
+                const inputs = form.querySelectorAll('input[required]');
+                const isFormValid = Array.from(inputs).every(input => input.value.trim() !== '');
+
+                if (!isFormValid) {
+                    // Prevent the default form submission behavior if form is invalid
+                    event.preventDefault();
+                    return;
+                }
+
+                // Display the spinner
+                spinner.style.display = 'block';
+            });
+        };
+
+        handleFormSubmit(loginForm, loginSpinner);
+        handleFormSubmit(signupForm, signupSpinner);
+
+        // Hide the spinner initially
+        loginSpinner.style.display = 'none';
+        signupSpinner.style.display = 'none';
+    });
+</script>
+</body>
+</html>

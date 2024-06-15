@@ -1,0 +1,276 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #070831;
+}
+.menu {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin:auto;
+}
+.menu li {
+  position: absolute;
+  left: 0;
+  list-style: none;
+  transform: rotate(0deg) translateX(100px);
+  transform-origin: 130px;
+  transition: 0.5s;
+  transition-delay: calc(0.1s * var(--i));
+}
+.menu.active li {
+  transform: rotate(calc(360deg / 11 * var(--i)));
+  -webkit-transform: rotate(calc(360deg / 11 * var(--i)));
+  -moz-transform: rotate(calc(360deg / 11 * var(--i)));
+  -ms-transform: rotate(calc(360deg / 11 * var(--i)));
+  -o-transform: rotate(calc(360deg / 11 * var(--i)));
+}
+.menu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  text-decoration: none;
+  font-size: 22px;
+  border-radius: 50%;
+  transform: rotate(calc(360deg / -11 * var(--i)));
+  transition: 1s;
+  color: transparent;
+  transition-delay: 0.5s;
+  filter: drop-shadow(0 0 2px var(--clr));
+  -webkit-transform: rotate(calc(360deg / -11 * var(--i)));
+  -moz-transform: rotate(calc(360deg / -11 * var(--i)));
+  -ms-transform: rotate(calc(360deg / -11 * var(--i)));
+  -o-transform: rotate(calc(360deg / -11 * var(--i)));
+}
+.menu.active a {
+  color: var(--clr);
+}
+.menu a::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--clr);
+  transform: rotate(calc(90deg * var(--i))) translate(0, 25px);
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+  transition-delay: 0.5s, 1s, 1.5s;
+}
+.menu.active a::before {
+  width: 50px;
+  height: 50px;
+  background: #161616;
+  border: 2px solid var(--clr);
+  transform: rotate(calc(0 * var(--i)));
+  transition: transform 0.5s, height 0.5s, width 0.5s;
+  transition-delay: 0.5s, 1.5s, 1.5s;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 5px var(--clr));
+  rotate: 135deg;
+}
+.menu.active li:hover a::before {
+  background: var(--clr);
+}
+.menu.active li:hover a ion-icon {
+  color: #161616;
+}
+
+.menuToggle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 32px;
+  transition: 1.5s;
+}
+.menu.active .menuToggle {
+  transform: rotate(315deg);
+}
+
+.log {
+  padding-right: 20px;
+  right: 40px;
+  min-width:500px;
+  margin-top: -20%;
+  height: 20%;
+  min-height: 300px;
+  width: 50%;
+  max-width:600px;
+  border: 3px groove rgba(47, 219, 254, 0.907);
+  background: linear-gradient(45deg, rgb(25, 23, 53) 40%, rgb(95, 239, 255));
+  border-radius: 3px;
+  box-shadow: 3px 2px 20px rgb(12, 216, 231);
+  margin-left: 10%;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+#inform{
+  margin: auto;
+  color:rgb(236, 231, 236);
+  letter-spacing: 1px;
+  margin-left:40%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  border: groove rgb(4, 255, 230);
+  width:165px;
+  height:17px;
+  box-shadow:2px 2px 10px black;
+  border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  -ms-border-radius:5px;
+  -o-border-radius:5px;
+  background: linear-gradient(45deg black white);
+  font-weight: bold;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+body {
+    font-family: "Varela Round", sans-serif;
+  }
+  .toast-item {
+    position: relative;
+    margin: 20px;
+  }
+  .toast {
+    width: auto;
+    min-width: 250px;
+    max-width: 50vw;
+    padding-left: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    word-break: break-word;
+    min-height: 40px;
+    max-height: 120px;
+    overflow-y: auto;
+    height: auto;
+    margin: auto;
+    margin-bottom: -70px;
+    z-index: 10000;
+  }
+  .toast.error::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: red;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.success::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: green;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.warning::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: yellow;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.help::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: blue;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast h3, .toast p {
+    margin-left: 20px;
+  }
+  .toast.error h3 {
+    color: red;
+  }
+  .toast.success h3 {
+    color: green;
+  }
+  .toast.warning h3 {
+    color: yellow;
+  }
+  .toast.help h3 {
+    color: blue;
+  }
+  .toast p {
+    font-size: 0.95rem;
+    color: #595959;
+  }
+  .close {
+    position: absolute;
+    width: 1.35rem;
+    height: 1.35rem;
+    text-align: center;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .toast.error .close {
+    background: red;
+  }
+  .toast.success .close {
+    background: green;
+  }
+  .toast.warning .close {
+    background: yellow;
+    color: black;
+  }
+  .toast.help .close {
+    background: blue;
+  }
+  .close:after {
+    content: "×";
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+  input[type=checkbox] {
+    display: none;
+  }
+  #t-success:not(:checked) ~ .toast-item.success {
+    display: none;
+  }
+  #t-error:not(:checked) ~ .toast-item.error {
+    display: none;
+  }
+  #t-warning:not(:checked) ~ .toast-item.warning {
+    display: none;
+  }
+  #t-help:not(:checked) ~ .toast-item.help {
+    display: none;
+  }

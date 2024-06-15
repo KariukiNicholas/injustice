@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600&family=Poppins:wght@100;300;400;500;600;700;800;900&display=swap");
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(90deg, #aea4e3, #d3ffe8);
+            font-family: "Poppins", sans-serif;
+        }
+
+        nav {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: rgba(4, 38, 89, 0.6);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            position:fixed;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: transparent;
+            font-size: 1rem;
+            display: flex;
+            align-items: right;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            margin-left: 70%;
+        }
+
+        nav ul li a:hover {
+            color: #999;
+        }
+
+        nav ul li a i {
+            margin-right: 5px;
+            color: #fff;
+        }
+
+        .menu-toggle {
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <i class="fas fa-bars menu-toggle"></i><br><br>
+    
+        
+        <ul>
+           
+            <li><a href="#"><i class="fas fa-pen"></i> Blog</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+        </ul>
+        <ul>
+            <li><a href="#"><i class="fas fa-cogs"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

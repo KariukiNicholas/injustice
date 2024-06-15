@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title> download-ratelog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/s-home page.css" />
+</head>
+<body>
+    <input type="checkbox" name="t-success" id="t-success">
+    <div class="toast-item success">
+      <div class="toast success">
+        <label for="t-success" class="close"></label>
+        <h3>Success!</h3>
+        <p id="success-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-error" id="t-error">
+    <div class="toast-item error">
+      <div class="toast error">
+        <label for="t-error" class="close"></label>
+        <h3>Error!</h3>
+        <p id="error-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-warning" id="t-warning">
+    <div class="toast-item warning">
+      <div class="toast warning">
+        <label for="t-warning" class="close"></label>
+        <h3>Warning!</h3>
+        <p id="warning-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-help" id="t-help">
+    <div class="toast-item help">
+      <div class="toast help">
+        <label for="t-help" class="close"></label>
+        <h3>Help!</h3>
+        <p id="help-msg-content"></p>
+      </div>
+    </div>
+<div id="loginSection" class="log" style="min-height: 800px;">
+    <aside>
+        <div id="side">
+            <h1> UPLOAD<br>IMAGES!</h1>
+            
+            <p> <br> </p>
+        </div>
+    </aside>
+    
+    <section style=" width: 80%;">
+          
+            <h1>SELECT STREAM </h1>
+    
+    
+            <form action="/download" method="post">
+                <P style="color:rgb(252, 255, 255); 
+                font-size:16px; 
+                left:3px;
+                font-weight:bold;font-family:Arial, Helvetica, sans-serif;
+                margin-top: 30px;
+                height: 8%px;
+                width: 65%;
+                border: 3px groove rgba(47, 219, 254, 0.907);
+                background: linear-gradient(45deg, rgb(25, 23, 53) 40%, rgb(95, 239, 255));
+                border-radius: 10px;
+                box-shadow: 3px 2px 20px rgb(12, 216, 231);
+                margin-left:10px;">{{info | safe}}</P>
+                <p style="color:green">Choose file format to download:</p>
+                <ul>
+                    {% for item in streams %}
+                      {% set stream_info = "Format: <span style='color: rgb(6, 215, 6)'> " ~ item.mime_type ~ "</span>, Type:  <span style='color: rgb(6, 215, 6)'>"  ~ item.type ~ "</span>, Resolution: <span style='color: rgb(51, 255, 0)'>" ~ item.resolution ~ "</span>, fps:   <span style='color: rgb(6, 215, 6)'>" ~ item.fps ~ "</span>, abr: <span style='color: rgb(6, 215, 6)'>" ~ item.abr %}
+                  
+                      <li>
+                        <input type="radio" id="option{{ loop.index }}" name="option" value="{{ item.itag }}" >
+                        <label for="option{{ loop.index }}">{{ stream_info | safe }}</label>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  
+                  <div id="progress"></div>
+                <button type="submit" id="download-button" style="color:rgb(14, 255, 14); width:70%; margin-left:15%;margin-top:20px; margin-bottom:20px; border-radius:10px; box-shadow:10px 10px 20px black; font-weight:bold;font-family: Elephant, sans-serif; bottom:0cm">Download</button>
+                <div id="spinner" class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                  </div>
+            </form>
+            
+            
+                
+             
+       
+    </section>
+</div>
+<div id="progress-bar" style="width: 0%;"></div>
+<div class="progress-bar">
+    <div class="progress" id="progress"></div>
+</div>
+<script src="../static/js/s-login.js"></script>
+
+<script>
+    document.getElementById('download_button').addEventListener('click', function() {
+        fetch('/start_download')
+            .then(response => {
+                if (response.ok) {
+                    console.log("Download started.");
+                    getProgress();
+                } else {
+                    console.error("Failed to start download.");
+                }
+            });
+    });
+
+    function getProgress() {
+        fetch('/get_progress')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('progress').innerText = `Download Progress: ${data.progress.toFixed(2)}%`;
+            });
+    }
+
+    // Request download progress every second
+    setInterval(getProgress, 1000);
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[action="/download"]');
+        const saveButton = document.getElementById('download-button');
+        const spinner = document.getElementById('spinner');
+    
+        form.addEventListener('submit', function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+    
+            // Check if the form is valid
+            if (form.checkValidity()) {
+                // Display the spinner
+                spinner.style.display = 'block';
+    
+                // Submit the form
+                form.submit();
+            }
+        });
+    
+        // Hide the spinner initially
+        spinner.style.display = 'none';
+    });
+    
+    </script>
+
+    <script>
+        const successMsg = "{{ success_msg |safe }}";
+        const errorMsg = "{{ error_msg |safe }}";
+        const warningMsg = "{{ warning_msg |safe }}";
+        const helpMsg = "{{ help_msg |safe }}";
+    
+        if (successMsg) {
+            const successCheckbox = document.getElementById("t-success");
+            const successContent = document.getElementById("success-msg-content");
+            successContent.innerHTML = successMsg;
+            successCheckbox.checked = true;
+            setTimeout(() => {   
+                successCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (errorMsg) {
+            const errorCheckbox = document.getElementById("t-error");
+            const errorContent = document.getElementById("error-msg-content");
+            errorContent.innerHTML = errorMsg;
+            errorCheckbox.checked = true;
+            setTimeout(() => {   
+                errorCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (warningMsg) {
+            const warningCheckbox = document.getElementById("t-warning");
+            const warningContent = document.getElementById("warning-msg-content");
+            warningContent.innerHTML = warningMsg;
+            warningCheckbox.checked = true;
+            setTimeout(() => {   
+                warningCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (helpMsg) {
+            const helpCheckbox = document.getElementById("t-help");
+            const helpContent = document.getElementById("help-msg-content");
+            helpContent.innerHTML = helpMsg;
+            helpCheckbox.checked = true;
+            setTimeout(() => {   
+                helpCheckbox.checked = false;
+            }, 5000);
+        }
+      </script>
+
+</body>
+</html>

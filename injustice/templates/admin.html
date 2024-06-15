@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title> admin-ratelog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/s-home page.css" />
+</head>
+<body>
+<div id="loginSection" class="log">
+    <aside>
+        <div id="side">
+            <h1> UPLOAD CONTENT!!</h1>
+            <h1>FOR ADMIN ONLY</h1>
+            <h1>confirm data before upoading</h1>
+            
+    </aside>
+    <section style="padding-left:20%">
+        <input type="checkbox" name="t-success" id="t-success">
+        <div class="toast-item success">
+          <div class="toast success">
+            <label for="t-success" class="close"></label>
+            <h3>Success!</h3>
+            <p id="success-msg-content"></p>
+          </div>
+        </div>
+      
+        <input type="checkbox" name="t-error" id="t-error">
+        <div class="toast-item error">
+          <div class="toast error">
+            <label for="t-error" class="close"></label>
+            <h3>Error!</h3>
+            <p id="error-msg-content"></p>
+          </div>
+        </div>
+      
+        <input type="checkbox" name="t-warning" id="t-warning">
+        <div class="toast-item warning">
+          <div class="toast warning">
+            <label for="t-warning" class="close"></label>
+            <h3>Warning!</h3>
+            <p id="warning-msg-content"></p>
+          </div>
+        </div>
+      
+        <input type="checkbox" name="t-help" id="t-help">
+        <div class="toast-item help">
+          <div class="toast help">
+            <label for="t-help" class="close"></label>
+            <h3>Help!</h3>
+            <p id="help-msg-content"></p>
+          </div>
+        </div>
+           
+           
+            <form action="/preview" method="post" enctype="multipart/form-data">
+                <label for="title">TITLE:</label><br>
+                <input type="text" id="title" name="title"><br>
+                <label for="content">Content:</label><br>
+                <textarea id="contentA" name="content"></textarea><br>
+                <input type="file" name="image" id="image">
+                <input type="file" name="image2" id="image"><br>
+                <input type="file" name="image3" id="image">
+                <input type="file" name="image4" id="image"><br><br>
+
+                <button type="submit" >Post</button>
+            </form>
+            
+             
+       
+    </section>
+</div>
+
+<script src="../static/js/s-login.js"></script>
+
+<script>
+    const successMsg = "{{ success_msg |safe }}";
+    const errorMsg = "{{ error_msg |safe }}";
+    const warningMsg = "{{ warning_msg |safe }}";
+    const helpMsg = "{{ help_msg |safe }}";
+
+    if (successMsg) {
+        const successCheckbox = document.getElementById("t-success");
+        const successContent = document.getElementById("success-msg-content");
+        successContent.innerHTML = successMsg;
+        successCheckbox.checked = true;
+        setTimeout(() => {   
+            successCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (errorMsg) {
+        const errorCheckbox = document.getElementById("t-error");
+        const errorContent = document.getElementById("error-msg-content");
+        errorContent.innerHTML = errorMsg;
+        errorCheckbox.checked = true;
+        setTimeout(() => {   
+            errorCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (warningMsg) {
+        const warningCheckbox = document.getElementById("t-warning");
+        const warningContent = document.getElementById("warning-msg-content");
+        warningContent.innerHTML = warningMsg;
+        warningCheckbox.checked = true;
+        setTimeout(() => {   
+            warningCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (helpMsg) {
+        const helpCheckbox = document.getElementById("t-help");
+        const helpContent = document.getElementById("help-msg-content");
+        helpContent.innerHTML = helpMsg;
+        helpCheckbox.checked = true;
+        setTimeout(() => {   
+            helpCheckbox.checked = false;
+        }, 5000);
+    }
+  </script>
+</body>
+</html>
+

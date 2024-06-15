@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Ratelog</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/profile.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+</head>
+<body>
+    <input type="checkbox" name="t-success" id="t-success">
+    <div class="toast-item success">
+      <div class="toast success">
+        <label for="t-success" class="close"></label>
+        <h3>Success!</h3>
+        <p id="success-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-error" id="t-error">
+    <div class="toast-item error">
+      <div class="toast error">
+        <label for="t-error" class="close"></label>
+        <h3>Error!</h3>
+        <p id="error-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-warning" id="t-warning">
+    <div class="toast-item warning">
+      <div class="toast warning">
+        <label for="t-warning" class="close"></label>
+        <h3>Warning!</h3>
+        <p id="warning-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-help" id="t-help">
+    <div class="toast-item help">
+      <div class="toast help">
+        <label for="t-help" class="close"></label>
+        <h3>Help!</h3>
+        <p id="help-msg-content"></p>
+      </div>
+    </div>
+<div id="loginSection" class="log" style="margin-top:2%; margin-bottom:5%" >
+    <section >
+       
+        <h1>PERSONAL DETAILS</h1>
+       
+        <form action="/profile" method="post">
+            
+            <div id="user_content">
+                {% if userinfo %}
+                <div id="user_content">
+                    <div id="profile_up">
+                        <img src="{{userinfo.profile}}" id="profile_pic_preview"  alt="Profile Picture"><br>
+                        <div id="profile_infos">
+                            <p style="font-weight: bold;">{{ userinfo.Username }}</p>
+                            <p>{{ userinfo.Email }}</p>
+                            <p>{{ userinfo.Bio }}</p>
+                        </div>
+                    </div>
+                    <div id="user_info">
+                        <div id="iconss">
+                            <p id="iconcall">
+                                <a href="tel:{{userinfo.Phone}}">
+                                    <ion-icon name="call"></ion-icon>   
+                                </a>
+                            </p>
+                                                      
+                            <p id="iconemail">
+                                <a href="mailto:{{userinfo.Email}}">
+                                    <ion-icon name="mail"></ion-icon>
+                                </a>
+                            </p>
+                                                    
+                            <p id="iconmsg">
+                                <a href="/open_chat"><i id="openchat"></i><ion-icon name="chatbox-ellipses"></ion-icon></a>
+                            </p>
+                        </div>
+                        
+                        <p>Mobile: <span>{{ userinfo.Phone }}</span> <p></ion-icon></p></p>
+                        <p>Address: <span>{{ userinfo.Address }}</span></p>
+                        <p>Date of Birth: <span>{{ userinfo.Birthdate }}</span></p>
+                        <p>Gender: <span>{{ userinfo.Gender }}</span></p>
+                        <p>Interest:<span>{{userinfo.Interest}}</span></p>
+                        <p>City: <span>{{ userinfo.City }}</span></p>
+                        <p>State: <span>{{ userinfo.State }}</span></p>
+                        <p>Postal Code: <span>{{ userinfo.PostalCode }}</span></p>
+                        <p>Country: <span>{{ userinfo.Country }}</span></p>
+                        
+                    </div>
+                    <div id="edit">
+                        <button type="button" id="toggleButton">EDIT PROFILE</button>
+                    </div>
+                    
+                {% else %}
+                    <p>No user information available.</p>
+                {% endif %}
+            </div>
+            
+                    
+                </div>
+                
+                   
+            
+
+        </form>
+    </section>
+    <p id="msg">{{ msg |safe }}</p>
+    <aside id="content">
+        <div id="side">
+            <form action="/update_profile" method="post" enctype="multipart/form-data">
+                <label for="profile_pic">Profile Picture:</label><br>
+                <input type="file" id="profile_pic_input" name="profile_pic" onchange="previewProfilePic(event)">
+                <br>
+        
+                <label for="bio" style="font-size:20px; margin-right:10px; font-weight:bold;">Bio:</label> <small>Maximum 400 characters</small><br>
+                <textarea id="bio" name="bio" rows="5" cols="50" maxlength="400"></textarea><br>
+                <br><br>
+        
+                <label for="country">Country:</label>
+                <select id="country" name="country">
+                    <option value="USA">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="KE">Kenya</option>
+                    <option value="CH">China</option>
+                    <option value="SA">South Africa</option>
+                    <option value="IN">India</option>
+                </select><br><br>
+        
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number"><br><br>
+        
+                <label for="interests">Interests:</label>
+                <select id="interests" name="intrests">
+                    <option value="sports">Sports</option>
+                    <option value="music">Music</option>
+                    <option value="cars">Cars</option>
+                    <option value="history">History</option>
+                    <option value="movies">Movies</option>
+                </select><br><br>
+        
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="birthdate"><br><br>
+        
+                <label for="gender">Gender:</label>
+                <input type="radio" id="male" class="radio" name="gender" value="male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" class="radio" name="gender" value="female">
+                <label for="female">Female</label><br><br>
+        
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city"><br><br>
+        
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" placeholder="Enter your state"><br><br>
+        
+                <label for="postal_code">Postal Code:</label>
+                <input type="number" id="postal_code" name="postal_code" placeholder="Enter your postal code"><br><br>
+        
+                <button type="submit">Submit</button>
+            </div>
+            </form>
+           😎
+    </aside>
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+        var content = document.getElementById("content");
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+        } else {
+            setTimeout(function() {
+                content.style.display = "none";
+            }, 0.000); // Adjust the delay time in milliseconds (e.g., 5000ms = 5 seconds)
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleButton = document.getElementById("toggleButton");
+        toggleButton.addEventListener("click", toggleVisibility);
+    });
+</script>
+
+<script>
+    function previewProfilePic(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('profile_pic_preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+   
+</script>
+<script>
+    const successMsg = "{{ success_msg |safe }}";
+    const errorMsg = "{{ error_msg |safe }}";
+    const warningMsg = "{{ warning_msg |safe }}";
+    const helpMsg = "{{ help_msg |safe }}";
+
+    if (successMsg) {
+        const successCheckbox = document.getElementById("t-success");
+        const successContent = document.getElementById("success-msg-content");
+        successContent.innerHTML = successMsg;
+        successCheckbox.checked = true;
+        setTimeout(() => {   
+            successCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (errorMsg) {
+        const errorCheckbox = document.getElementById("t-error");
+        const errorContent = document.getElementById("error-msg-content");
+        errorContent.innerHTML = errorMsg;
+        errorCheckbox.checked = true;
+        setTimeout(() => {   
+            errorCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (warningMsg) {
+        const warningCheckbox = document.getElementById("t-warning");
+        const warningContent = document.getElementById("warning-msg-content");
+        warningContent.innerHTML = warningMsg;
+        warningCheckbox.checked = true;
+        setTimeout(() => {   
+            warningCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (helpMsg) {
+        const helpCheckbox = document.getElementById("t-help");
+        const helpContent = document.getElementById("help-msg-content");
+        helpContent.innerHTML = helpMsg;
+        helpCheckbox.checked = true;
+        setTimeout(() => {   
+            helpCheckbox.checked = false;
+        }, 5000);
+    }
+  </script>
+
+
+</head>
+<body>
+
+</body>
+</html>

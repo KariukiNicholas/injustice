@@ -1,0 +1,556 @@
+.log {
+    margin: auto;
+    margin-top: 12%;
+    height: auto;
+    min-height: 300px;
+    width: 50%;
+   
+    border-radius: 3px;
+    
+    margin-bottom: 30px;
+    position: relative;
+}
+
+aside {
+    overflow: hidden;
+    flex: row;
+    margin-right: 30px;
+    padding-top: 50px;
+    text-align: right;
+}
+
+section {
+    margin-top: -180px;
+    margin-left: 30px;
+    width: 100%;
+}
+
+section p {
+    width: 100%;
+    background: transparent;
+}
+
+aside p {
+    overflow: hidden;
+    width: 100%;
+}
+
+input {
+    padding: 10px;
+    min-height: 18px;
+    min-width: 200px;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    margin: 4px 2px;
+}
+
+button {
+    height: 30px;
+    min-width: 50px;
+    width: 60%;
+    max-width: 200px;
+    border-radius: 10px;
+    border: blue;
+    background: linear-gradient(rgb(9, 8, 8), rgb(9, 243, 251));
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:active {
+    background: blue;
+    border-radius: 70px;
+}
+
+h2 {
+    margin-left: 60px;
+}
+
+.hidden {
+    display: none;
+}
+
+.message-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, rgb(25, 23, 53) 44%, rgb(95, 239, 255));
+    border: none;
+    border-radius: 50px;
+    box-shadow: 3px 2px 20px rgb(22, 233, 223);
+    color: rgb(7, 243, 172);
+}
+
+#recover {
+    width: 20px;
+    background: transparent;
+    color: blueviolet;
+    font-size: 12px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input:disabled {
+    background-color: transparent;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#canvas {
+    height: 350px;
+    width: 100%;
+}
+
+.blurred {
+    filter: blur(3px);
+}
+
+.spinner-container {
+    position: fixed;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid rgba(6, 13, 95, 0.583);
+    border-left-color: #00f5dd;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+.custom-file-input input[type="file"] {
+    display: none;
+}
+
+
+body {
+    background: rgb(24, 24, 47);
+    color: white;
+    font-size: 16px;
+}
+
+#profile_pic_preview{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    opacity: 1;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    margin-left: 10%;
+
+}
+
+#label_check{
+    
+    margin-top: 0%;
+    height:100%;
+    width: 85%;
+    border-radius: 3px;
+    box-shadow: 3px 2px 20px rgb(0, 0, 0);
+    margin-bottom: 0px;
+    position: relative;
+    background: linear-gradient(45deg, rgb(25, 23, 53) 40%, rgb(95, 239, 255));
+}
+.profile-pic{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.listed_users{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    background: #060908;
+    margin-bottom: 10px;
+
+}
+.listed-content{
+    background: #060908;
+    width: 100%;
+
+}
+label{
+    font-size:16px;
+    font-weight: 500;
+    cursor: pointer;
+    color:rgb(241, 249, 241);
+    opacity: 0.7;
+    transition: opacity 0,4s ease-in-out;
+    display: block;
+    width: calc(20%- 48px);
+    text-align: start;
+    z-index: 100;
+    user-select: none;
+}
+
+input[type="checkbox"]{
+            display: none;
+            width: 0;
+        }
+
+label:hover,
+input[type="checkbox"]:checked+ label{
+    opacity:1;
+    color:grey;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#msg {
+    position: absolute;
+    margin-top: -30px;
+    margin-left: 25%;
+    color: red;
+    font-weight: bold;
+}
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+body {
+    font-family: "Varela Round", sans-serif;
+  }
+  .toast-item {
+    position: relative;
+    margin: 20px;
+  }
+  .toast {
+    width: auto;
+    min-width: 250px;
+    max-width: 50vw;
+    overflow-x: hidden;
+    padding-left: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    word-break: break-word;
+    min-height: 40px;
+    max-height: 120px;
+    overflow-y: auto;
+    height: auto;
+    margin: auto;
+    margin-bottom: -70px;
+    z-index: 10000;
+  }
+  .toast.error::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: red;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.success::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: green;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.warning::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: yellow;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast.help::before {
+    content: "";
+    width: 10px;
+    height: calc(100% - 20px);
+    background-color: blue;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 20px 0 0 20px;
+  }
+  .toast h3, .toast p {
+    margin-left: 20px;
+  }
+  .toast.error h3 {
+    color: red;
+  }
+  .toast.success h3 {
+    color: green;
+  }
+  .toast.warning h3 {
+    color: yellow;
+  }
+  .toast.help h3 {
+    color: blue;
+  }
+  .toast p {
+    font-size: 0.95rem;
+    color: #595959;
+  }
+  .close {
+    position: absolute;
+    width: 1.35rem;
+    height: 1.35rem;
+    text-align: center;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .toast.error .close {
+    background: red;
+  }
+  .toast.success .close {
+    background: green;
+  }
+  .toast.warning .close {
+    background: yellow;
+    color: black;
+  }
+  .toast.help .close {
+    background: blue;
+  }
+  .close:after {
+    content: "×";
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+  input[type=checkbox] {
+    display: none;
+  }
+  #t-success:not(:checked) ~ .toast-item.success {
+    display: none;
+  }
+  #t-error:not(:checked) ~ .toast-item.error {
+    display: none;
+  }
+  #t-warning:not(:checked) ~ .toast-item.warning {
+    display: none;
+  }
+  #t-help:not(:checked) ~ .toast-item.help {
+    display: none;
+  }
+
+
+@media (max-width: 900px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 0;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section p {
+        width: 100%;
+        background: transparent;
+        overflow: hidden;
+    }
+    aside p {
+        margin-right: 20px;
+        margin-top: 0;
+        padding-top: 0;
+        font-size: 24px;
+    }
+    input {
+        font-size: 16px;
+    }
+    button {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    aside p {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 364px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 40%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+}

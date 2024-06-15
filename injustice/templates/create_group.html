@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ratelog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/create_group.css" />
+    <script src="../static/js/spinner.js"></script>
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+  
+</head>
+<body>
+
+    <div id="loginSection" class="log">
+        
+        <aside>
+            <!-- Content for the aside section (if any) -->
+        </aside>
+        <section>
+            <form id="groupForm" action="/create_group_chat_details" method="post" enctype="multipart/form-data">
+                <input type="checkbox" name="t-success" id="t-success">
+                <div class="toast-item success">
+                  <div class="toast success">
+                    <label for="t-success" class="close"></label>
+                    <h3>Success!</h3>
+                    <p id="success-msg-content"></p>
+                  </div>
+                </div>
+              
+                <input type="checkbox" name="t-error" id="t-error">
+                <div class="toast-item error">
+                  <div class="toast error">
+                    <label for="t-error" class="close"></label>
+                    <h3>Error!</h3>
+                    <p id="error-msg-content"></p>
+                  </div>
+                </div>
+              
+                <input type="checkbox" name="t-warning" id="t-warning">
+                <div class="toast-item warning">
+                  <div class="toast warning">
+                    <label for="t-warning" class="close"></label>
+                    <h3>Warning!</h3>
+                    <p id="warning-msg-content"></p>
+                  </div>
+                </div>
+              
+                <input type="checkbox" name="t-help" id="t-help">
+                <div class="toast-item help">
+                  <div class="toast help">
+                    <label for="t-help" class="close"></label>
+                    <h3>Help!</h3>
+                    <p id="help-msg-content"></p>
+                  </div>
+                </div>
+                <h2>CREATE GROUP</h2>
+                
+                <fieldset id="label_check">
+                    <legend>Select at least one user:</legend>
+                    <ul>
+                        {% for chat in chats %}
+                        <li>
+                            <input type="checkbox" name="selected_users" value="{{ chat.receiver_id }}" id="user_{{ chat.receiver_id }}">
+                            <label for="user_{{ chat.receiver_id }}">
+                                <div class="listed_users">
+                                    <img class="profile-pic" src="{{ chat.profile_pic }}" alt="Profile Picture">
+                                    <div class="listed-content">
+                                        <div class="name">{{ chat.receiver_name }}</div>
+                                        <div class="messagech">{{ chat.receiver_id }}</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </fieldset>
+                  {{groups}}
+                <div id="bottom_select">
+                    <span>If you have chosen users,</span>
+                    <span id="nextLink" style="display: none;"><a href="#" id="signupLink">Next</a></span>
+                </div>
+         
+        </section>
+    </div>
+    
+    <div id="signupSection" class="log hidden">
+        <aside>
+            <div id="side">
+                <h1> CREATE, <br>ACCOUNT!</h1>
+                <p> sign up, to start<br> gaining own<br> benefits.</p>
+            </div>
+        </aside>
+        <section>
+            <h2>REGISTER GROUP</h2>
+           
+                <div>
+                    <div class="custom-file-input">
+                        <input hidden type="file" id="fileInput" name="group_profile_pic" accept="image/*" onchange="previewProfilePic(event)">
+                        <label for="fileInput" id="customButton">
+                            <img src="{{ url_for('static', filename='images/groupicon.jpeg') }}" id="profile_pic_preview" alt="Upload Icon">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" id="group_name" name="group_name" placeholder="Group Name" required><br>
+                    <input type="text" name="group_description" placeholder="Group Description"><br>
+                    <button type="submit" id="signup">Create</button>
+                    <div id="signupSpinner" class="spinner" style="display:none;">
+                        <div class="double-bounce1"></div>
+                        <div class="double-bounce2"></div>
+                    </div>
+                </div>
+            </form>
+            <p>Add more users, <a href="#" id="loginLink">Back</a></p>
+            {{all}}
+            {{create_group}}
+        </section>
+        
+    </div>
+
+<script src="../static/js/s-login.js"></script>
+<script>
+    const loginSection = document.getElementById('loginSection');
+    const signupSection = document.getElementById('signupSection');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+
+    signupLink.addEventListener('click', function() {
+        loginSection.classList.add('hidden');
+        signupSection.classList.remove('hidden');
+    });
+
+    loginLink.addEventListener('click', function() {
+        signupSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+    });
+</script>
+<script>
+    const successMsg = "{{ success_msg |safe }}";
+    const errorMsg = "{{ error_msg |safe }}";
+    const warningMsg = "{{ warning_msg |safe }}";
+    const helpMsg = "{{ help_msg |safe }}";
+
+    if (successMsg) {
+        const successCheckbox = document.getElementById("t-success");
+        const successContent = document.getElementById("success-msg-content");
+        successContent.innerHTML = successMsg;
+        successCheckbox.checked = true;
+        setTimeout(() => {   
+            successCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (errorMsg) {
+        const errorCheckbox = document.getElementById("t-error");
+        const errorContent = document.getElementById("error-msg-content");
+        errorContent.innerHTML = errorMsg;
+        errorCheckbox.checked = true;
+        setTimeout(() => {   
+            errorCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (warningMsg) {
+        const warningCheckbox = document.getElementById("t-warning");
+        const warningContent = document.getElementById("warning-msg-content");
+        warningContent.innerHTML = warningMsg;
+        warningCheckbox.checked = true;
+        setTimeout(() => {   
+            warningCheckbox.checked = false;
+        }, 5000);
+    }
+
+    if (helpMsg) {
+        const helpCheckbox = document.getElementById("t-help");
+        const helpContent = document.getElementById("help-msg-content");
+        helpContent.innerHTML = helpMsg;
+        helpCheckbox.checked = true;
+        setTimeout(() => {   
+            helpCheckbox.checked = false;
+        }, 5000);
+    }
+  </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signupForm = document.querySelector('form[action="/create_group_chat_details"]');
+        const signupSpinner = document.getElementById('signupSpinner');
+
+        const handleFormSubmit = (form, spinner) => {
+            form.addEventListener('submit', function(event) {
+                // Check if all inputs are filled
+                const inputs = form.querySelectorAll('input[required]');
+                const isFormValid = Array.from(inputs).every(input => input.value.trim() !== '');
+
+                if (!isFormValid) {
+                    // Prevent the default form submission behavior if form is invalid
+                    event.preventDefault();
+                    return;
+                }
+
+                // Display the spinner
+                spinner.style.display = 'block';
+            });
+        };
+
+        handleFormSubmit(signupForm, signupSpinner);
+
+        // Hide the spinner initially
+        signupSpinner.style.display = 'none';
+    });
+</script>
+<script>
+    function previewProfilePic(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('profile_pic_preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var nextLink = document.getElementById("nextLink");
+        var signupLink = document.getElementById("signupLink");
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var checked = false;
+                checkboxes.forEach(function(chk) {
+                    if (chk.checked) {
+                        checked = true;
+                        return;
+                    }
+                });
+                if (checked) {
+                    nextLink.style.display = 'block';
+                    nextLink.classList.add("active");
+                } else {
+                    nextLink.style.display = 'none';
+                    nextLink.classList.remove("active");
+                }
+            });
+        });
+
+        nextLink.addEventListener('click', function(event) {
+            if (!this.classList.contains("active")) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+</html>

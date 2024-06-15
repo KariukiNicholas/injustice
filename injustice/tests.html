@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message Box</title>
+<style>
+    /* Style for the message box */
+    .message-box {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f0f0f0;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</head>
+<body>
+<button onclick="showPopupInput()">Click Me</button>
+
+<!-- Message box container -->
+<div id="messageBox" class="message-box">
+    <p id="messageText"></p>
+</div>
+
+<!-- Button to trigger the message box -->
+<button onclick="showMessageBox()">Show Message Box</button>
+
+<script>
+// Function to show the message box
+function showMessageBox() {
+    var messageBox = document.getElementById("messageBox");
+    var messageText = document.getElementById("messageText");
+
+    // Set the message text
+    messageText.textContent = "This is a message!";
+
+    // Show the message box
+    messageBox.style.display = "block";
+
+    // Hide the message box after 3 seconds (3000 milliseconds)
+    setTimeout(function() {
+        messageBox.style.display = "none";
+    }, 3000);
+}
+
+function showPopupInput() {
+    // Prompt the user for input
+    var userInput = window.prompt("Enter your input:");
+
+    // Check if the user entered something
+    if (userInput !== null) {
+        // Print the user input
+        console.log("User input:", userInput);
+    } else {
+        // User clicked cancel
+        console.log("User cancelled the input.");
+    }
+}
+</script>
+
+</body>
+</html>
+body {
+    background: rgb(24, 24, 47);
+    color: white;
+    font-size: 16px;
+}
+
+.log {
+    margin: auto;
+    min-width: 300px;
+    max-width: 90%;
+    margin-top: 12%;
+    height: auto;
+    min-height: 300px;
+    width: 50%;
+    border: 3px groove rgba(47, 219, 254, 0.907);
+    background: linear-gradient(45deg, rgb(25, 23, 53) 40%, rgb(95, 239, 255));
+    border-radius: 3px;
+    box-shadow: 3px 2px 20px rgb(12, 216, 231);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+aside {
+    overflow: hidden;
+    flex: row;
+    margin-right: 30px;
+    padding-top: 50px;
+    text-align: right;
+}
+
+section {
+    margin-top: -180px;
+    margin-left: 30px;
+    width: 100%;
+}
+
+section p {
+    width: 100%;
+    background: transparent;
+}
+
+aside p {
+    overflow: hidden;
+    width: 100%;
+}
+
+input {
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 10px;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding-bottom: 2px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+button {
+    height: 30px;
+    min-width: 50px;
+    width: 60%;
+    max-width: 200px;
+    border-radius: 10px;
+    border: blue;
+    background: linear-gradient(rgb(9, 8, 8), rgb(9, 243, 251));
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:active {
+    background: blue;
+    border-radius: 70px;
+}
+
+h2 {
+    margin-left: 60px;
+}
+
+.hidden {
+    display: none;
+}
+
+.message-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, rgb(25, 23, 53) 44%, rgb(95, 239, 255));
+    border: none;
+    border-radius: 50px;
+    box-shadow: 3px 2px 20px rgb(22, 233, 223);
+    color: rgb(7, 243, 172);
+}
+
+#recover {
+    width: 20px;
+    background: transparent;
+    color: blueviolet;
+    font-size: 12px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input:disabled {
+    background-color: transparent;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#canvas {
+    height: 350px;
+    width: 100%;
+}
+
+.blurred {
+    filter: blur(3px);
+}
+
+.spinner-container {
+    position: fixed;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid rgba(6, 13, 95, 0.583);
+    border-left-color: #00f5dd;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#msg {
+    position: absolute;
+    margin-top: -30px;
+    margin-left: 25%;
+    color: red;
+    font-weight: bold;
+}
+
+@media (max-width: 900px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 0;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section p {
+        width: 100%;
+        background: transparent;
+        overflow: hidden;
+    }
+    aside p {
+        margin-right: 20px;
+        margin-top: 0;
+        padding-top: 0;
+        font-size: 24px;
+    }
+    input {
+        font-size: 16px;
+    }
+    button {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+    aside p {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 364px) {
+    .log {
+        margin: auto;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 5%;
+        justify-content: center;
+    }
+    .log p {
+        font-size: 20px;
+    }
+    .log input {
+        width: 60%;
+        min-height: 60px;
+    }
+    .log button {
+        width: 60%;
+    }
+    aside {
+        margin-top: -30%;
+        margin-right: 0;
+        padding-top: 50%;
+        padding-right: 20px;
+        text-align: center;
+        position: relative;
+        margin-left: 25%;
+        margin-bottom: 40%;
+        font-size: 14px;
+    }
+    section {
+        text-align: center;
+        margin-top: -100px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        margin-bottom: 20%;
+        font-size: 14px;
+    }
+}
+
+
+
+
+def upload_profile_pic():
+    profile_email = session.get('profile_email')
+    if not profile_email:
+        return jsonify(message="User not logged in."), 403
+    
+    try:
+
+        sql = "SELECT profile_pic FROM user_details WHERE email=%s"
+        mycursor.execute(sql, (profile_email,))
+        userinfo = mycursor.fetchone()
+        if userinfo and userinfo[0]:
+            file_path = userinfo[0]
+            if os.path.isfile(file_path):
+                file_extension = os.path.splitext(file_path)[-1].lower()
+                with open(file_path, "rb") as image_file:
+                    encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
+                return jsonify([{
+                    'type': 'image',
+                    'content': f'data:image/{file_extension[1:]};base64,{encoded_image}'
+                }])
+        return jsonify(message="No profile picture found."), 404
+    
+    except mysql.connector.Error as db_err:
+        logging.error(f"Database error: {db_err}")
+        return jsonify(message="Database error."), 500
+    except Exception as e:
+        logging.error(f"Error retrieving profile picture: {e}")
+        return jsonify(message="Error retrieving profile picture."), 500
+    
+
+
+@app.route('/open_homepage',methods=['GET','POST'])  
+def open_homepage():
+    return render_template("s-home page.html")
+
+
+
+def get_or_create_chat(user_sender_id, user_receiver_id):
+    mycursor.execute("""
+        SELECT chat_id 
+        FROM chats 
+        WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)
+    """, (user_sender_id, user_receiver_id, user_receiver_id, user_sender_id))
+    chat = mycursor.fetchone()
+    
+    if chat is None:
+        mycursor.execute("""
+            INSERT INTO chats (user1_id, user2_id, created_at) 
+            VALUES (%s, %s, CURRENT_TIMESTAMP)
+        """, (user_sender_id, user_receiver_id))
+        mydb.commit()
+        chat_id = mycursor.lastrowid
+    else:
+        chat_id = chat[0]
+    
+    return chat_id
+
+
+def chat():
+    formatted_messages = ""  # Initialize here
+    try:
+        message = request.form.get('chat') 
+        receiver_email = "briannjuguna694@gmail.com"
+        profile_email = session.get('profile_email')
+       
+        mycursor.execute("SELECT user_id FROM user_details WHERE email = %s", (profile_email,))
+        user_sender_id = mycursor.fetchone()
+        if user_sender_id is None:
+            msg= "Invalid sender email", 400
+        
+        user_sender_id = user_sender_id[0]
+        
+        mycursor.execute("SELECT user_id FROM user_details WHERE email = %s", (receiver_email,))
+        user_receiver_id = mycursor.fetchone()
+        if user_receiver_id is None:
+            msg= "Invalid receiver email", 400
+        user_receiver_id = user_receiver_id[0]
+
+        chat_id = get_or_create_chat(user_sender_id, user_receiver_id)
+        if 'chat' in request.form and request.form['chat']:
+            sql = "INSERT INTO messages (chat_id, sender_id, receiver_id, message_text) VALUES (%s, %s, %s, %s)"
+            val = (chat_id, user_sender_id, user_receiver_id, message)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            msg= 'Message sent successfully'
+
+        update = """
+        UPDATE chats
+        SET last_message_id = (SELECT MAX(message_id) FROM messages WHERE chat_id = %s),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE chat_id = %s
+        """
+        mycursor.execute(update, (chat_id, chat_id))
+        mydb.commit()
+        
+       
+        
+       
+        formatted_messages = load_chat(chat_id, user_receiver_id)
+        session['user_sender_id'] = user_sender_id
+        session['chat_id'] = chat_id
+        msg="!!"
+        return formatted_messages
+    
+    except Exception as e:
+        msg= {'error': str(e)}, 500  
+        
+    finally:
+        formatted_messages += f"<p style='color:green;'>{msg}</p>"        
+        return formatted_messages  
+    
+def load_chat(chat_id, user_sender_id):
+    try:
+        # Retrieve messages for the specified chat, ordered by timestamp descending,
+        # and join with user_details to get sender_username
+        retrieve = """
+        SELECT m.message_text, m.timestamp, m.status, u.username AS sender_username
+        FROM messages m 
+        JOIN user_details u ON m.sender_id = u.user_id
+        WHERE m.chat_id = %s
+        ORDER BY m.timestamp DESC
+        """
+        mycursor.execute(retrieve, (chat_id,))
+        retrieved_messages = mycursor.fetchall()
+
+        # Update message status to 'read' for messages received by the user
+        status_update = """
+        UPDATE messages
+        SET status = 'read'
+        WHERE chat_id = %s AND receiver_id = %s AND status = 'unread'
+        """
+        mycursor.execute(status_update, (chat_id, user_sender_id))
+        mydb.commit()
+
+        # Format retrieved messages into a list of dictionaries
+        formatted_messages = []
+        for msg in retrieved_messages:
+            content_item = {
+                'message_text': msg[0],
+                'timestamp': msg[1],
+                'status': msg[2],
+                'sender_id': msg[3]
+            }
+            formatted_messages.append(content_item)
+        
+        return formatted_messages
+
+    except Exception as e:
+
+        logging.error(f"Error loading chat: {e}")
+        return []
+
+
+    
+    
+logging.basicConfig(level=logging.ERROR)
+@app.route('/load_chat', methods=['POST'])
+def get_load_chat():
+    try:
+      
+        chat_id = session.get('chat_id')
+        user_sender_id = session.get("user_sender_id")
+        loaded_chat = load_chat(chat_id, user_sender_id)
+        return render_template("s-chat.html", formatted_messages=loaded_chat)
+    
+    except Exception as e:
+       return render_template("s-chat.html", formatted_messages=loaded_chat)
+
+
+@app.route('/send_chat', methods=['POST'])
+def send_chat():
+    try:
+        sent_message = chat()
+        return render_template('s-chat.html',  formatted_messages=sent_message)
+    except Exception as err:
+        return render_template("s-chat.html", msg=str(err))
+
+@app.route('/open_chat', methods=['GET', 'POST'])  
+def open_chats():
+    chat_id = session.get('chat_id')
+    user_sender_id = session.get("user_sender_id")
+    formatted_messages = load_chat(chat_id, user_sender_id)
+    return render_template("s-chat.html", formatted_messages=formatted_messages)

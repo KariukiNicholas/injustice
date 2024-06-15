@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600&family=Poppins:wght@100;300;400;500;600;700;800;900&display=swap");
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        nav > ul,
+        nav > ul > li {
+            outline: 0;
+            list-style: none;
+        }
+
+        nav > ul > li > a {
+            text-decoration: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(90deg, #aea4e3, #d3ffe8);
+            font-family: "Poppins", sans-serif;
+        }
+
+        .main-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 60px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.6);
+            transition: width 0.3s linear;
+            z-index: 10;
+            padding-top: 10px;
+        }
+
+        .main-menu:hover {
+            width: 180px;
+            overflow: visible;
+        }
+
+        .main-menu > ul > li {
+            position: relative;
+            display: block;
+            width: 180px;
+        }
+
+        .main-menu > ul > li > a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1rem;
+            transition: all 0.1s linear;
+            padding: 10px 0;
+        }
+
+        .nav-icon {
+            width: 60px;
+            height: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .nav-text {
+            width: 120px;
+            height: 20px;
+            font-family: "Mulish", sans-serif;
+        }
+
+        .logout {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .logout > li > a {
+            justify-content: flex-start;
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-menu">
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span class="nav-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-image nav-icon"></i>
+                    <span class="nav-text">Gallery</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-pen nav-icon"></i>
+                    <span class="nav-text">Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span class="nav-text">Messages</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-bell nav-icon"></i>
+                    <span class="nav-text">Notifications</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="logout">
+            <li>
+                <a href="#">
+                    <i class="fas fa-cogs nav-icon"></i>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>

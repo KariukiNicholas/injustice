@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ratelog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/s-home page.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+</head>
+<div id="menubar">
+    {% if userdata %}
+        {% for user in userdata %}
+            <div id="menuicon">
+                <p>
+                    <span>{{ user.Username }}<br>{{ user.Email }}</span> 
+                    {% if user.profile %}
+                        <span><a href="/profile"><i id="openchat"></i><img src="{{ user.profile }}" alt="Profile Picture"></a></span>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/bald_placeholder.jpg') }}" alt="No profile picture found">
+                    {% endif %}
+                    <span><button id="logout"><a href="/login"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></button></span>
+                    <span><button id="theme">
+                        <div id="themeico">
+                        <div id="light ">
+                            <ion-icon name="sunny"></ion-icon>
+                        </div>
+                        <div id="dark">
+                            <ion-icon name="moon"></ion-icon>
+                        </div>
+                    </div>
+                    </button></span>
+                    <span><button id="icoset"><i class="fas fa-cogs"></i></button></span>
+                </p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div id="menu_clicks">
+        <div class="clicks">
+            <a href="/open_chat"><button class="click"><ion-icon name="chatbox-ellipses"></ion-icon> CHAT</button></a>
+            <button class="click"><ion-icon name="pulse-outline"></ion-icon> PASSION</button>
+            <a href="/download_more"><button class="click"><ion-icon name="download-outline"></ion-icon> DOWNLOAD</button></a>
+            <a href="/camera_more"><button class="click"><ion-icon name="camera-outline"></ion-icon> CAMERA</button></a>
+            <button class="click"><ion-icon name="videocam-outline"></ion-icon> REELS</button>
+            <button class="click"><ion-icon name="musical-notes-outline"></ion-icon> MUSIC</button>
+            <button class="click"><ion-icon name="settings-outline"></ion-icon> MEMORY</button>
+            <button class="click"><ion-icon name="key-outline"></ion-icon> HISTORY</button>
+        </div>
+    </div>
+</div>
+
+
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1 data-aos="zoom-in"
+                data-aos-offset="200"
+                data-aos-delay="50"
+                data-aos-duration="1000"
+                data-aos-easing="ease-in-out"
+                data-aos-mirror="true"
+                data-aos-once="false">INJUSTICE</h1>
+            </div>
+            <nav id="nav" role="navigation">
+
+                <li><a href="#"><i  id="toggleButton" class="fas fa-bars menu-toggle"></i></a></li>
+
+    
+                <ul>
+                    <li><a href="#"><i class="fas fa-pen"></i> Blog</a></li>
+                    <li><a href="/open_chat"><i id="openchat" class="fas fa-envelope"></i> Messages</a></li>
+                    <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#"><i class="fas fa-cogs"></i> Settings</a></li>
+                    <li><a href="/login"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                  
+                </ul>
+            </nav>
+        </div>
+    </header>
+   
+    <input type="checkbox" name="t-success" id="t-success">
+    <div class="toast-item success">
+      <div class="toast success">
+        <label for="t-success" class="close"></label>
+        <h3>Success!</h3>
+        <p id="success-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-error" id="t-error">
+    <div class="toast-item error">
+      <div class="toast error">
+        <label for="t-error" class="close"></label>
+        <h3>Error!</h3>
+        <p id="error-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-warning" id="t-warning">
+    <div class="toast-item warning">
+      <div class="toast warning">
+        <label for="t-warning" class="close"></label>
+        <h3>Warning!</h3>
+        <p id="warning-msg-content"></p>
+      </div>
+    </div>
+  
+    <input type="checkbox" name="t-help" id="t-help">
+    <div class="toast-item help">
+      <div class="toast help">
+        <label for="t-help" class="close"></label>
+        <h3>Help!</h3>
+        <p id="help-msg-content"></p>
+      </div>
+    </div>
+    
+    
+<div id="loginSection" class="log" style="min-height: 130vh;">
+    <aside>
+        <div id="side">
+        </div>
+    </aside>
+    <section >
+           
+            
+            <form action="/update" method="post">
+                
+                <div id="table">{{ page|safe }}</div>
+                
+               
+            </form>
+
+            <div data-aos="zoom-in"  id="news-container"></div>
+            
+    <div class="loading-spinner" id="loading-spinner" style="display: none;">Loading...</div>
+
+           
+    </section>
+    
+
+
+    <script>
+        const successMsg = "{{ success_msg |safe }}";
+        const errorMsg = "{{ error_msg |safe }}";
+        const warningMsg = "{{ warning_msg |safe }}";
+        const helpMsg = "{{ help_msg |safe }}";
+    
+        if (successMsg) {
+            const successCheckbox = document.getElementById("t-success");
+            const successContent = document.getElementById("success-msg-content");
+            successContent.innerHTML = successMsg;
+            successCheckbox.checked = true;
+            setTimeout(() => {   
+                successCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (errorMsg) {
+            const errorCheckbox = document.getElementById("t-error");
+            const errorContent = document.getElementById("error-msg-content");
+            errorContent.innerHTML = errorMsg;
+            errorCheckbox.checked = true;
+            setTimeout(() => {   
+                errorCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (warningMsg) {
+            const warningCheckbox = document.getElementById("t-warning");
+            const warningContent = document.getElementById("warning-msg-content");
+            warningContent.innerHTML = warningMsg;
+            warningCheckbox.checked = true;
+            setTimeout(() => {   
+                warningCheckbox.checked = false;
+            }, 5000);
+        }
+    
+        if (helpMsg) {
+            const helpCheckbox = document.getElementById("t-help");
+            const helpContent = document.getElementById("help-msg-content");
+            helpContent.innerHTML = helpMsg;
+            helpCheckbox.checked = true;
+            setTimeout(() => {   
+                helpCheckbox.checked = false;
+            }, 5000);
+        }
+      </script>
+
+<script>
+    function showLoadingSpinner() {
+        let spinner = document.getElementById('loading-spinner');
+        if (!spinner) {
+            spinner = document.createElement('div');
+            spinner.id = 'loading-spinner';
+            spinner.innerHTML = 'Loading...';
+            document.body.appendChild(spinner);
+        }
+        spinner.style.display = 'block';
+    }
+    
+    function hideLoadingSpinner() {
+        const spinner = document.getElementById('loading-spinner');
+        if (spinner) {
+            spinner.style.display = 'none';
+        }
+    }
+    
+</script>
+ 
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+  </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        //const form = document.querySelector('form[action="/get_email"]');
+        const form = document.querySelector('class="fas fa-envelope"');
+        
+        const saveButton = document.getElementById('openchat');
+        const spinner = document.getElementById('spinner');
+    
+        form.addEventListener('submit', function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+    
+            // Check if the form is valid
+            if (form.checkValidity()) {
+                // Display the spinner
+                spinner.style.display = 'block';
+    
+                // Submit the form
+                form.submit();
+            }
+        });
+    
+        // Hide the spinner initially
+        spinner.style.display = 'none';
+    });
+    
+    </script>
+    <script>
+        function toggleVisibility() {
+            var content = document.getElementById("menubar");
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+                // Add event listener for click anywhere on the screen
+                document.addEventListener("click", hideOnClickOutside);
+            } else {
+                content.style.display = "none";
+                // Remove event listener when menu bar is hidden
+                document.removeEventListener("click", hideOnClickOutside);
+            }
+        }
+    
+        function hideOnClickOutside(event) {
+            var content = document.getElementById("menubar");
+            if (!content.contains(event.target) && event.target.id !== 'toggleButton') { // Check if the click is outside the menu bar
+                content.style.display = "none";
+                document.removeEventListener("click", hideOnClickOutside); // Remove the event listener
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            var toggleButton = document.getElementById("toggleButton");
+            toggleButton.addEventListener("click", toggleVisibility);
+        });
+    </script>
+    
+    
+    
+    <script>
+        function previewProfilePic(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('profile_pic_preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    
+       
+    </script>
+    <script>
+        let offset = 0;
+        const initialChunkSize = Math.ceil(window.innerHeight / 100);
+        const additionalChunkSize = 10;  // Adjust as needed to load additional content on scroll
+        let isLoading = false;
+        let debounceTimer;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent(initialChunkSize);  // Load initial content to fill the screen height
+
+            window.addEventListener('scroll', () => {
+                if (debounceTimer) {
+                    clearTimeout(debounceTimer);
+                }
+                debounceTimer = setTimeout(() => {
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50 && !isLoading) {
+                        // Adjusted condition to trigger loading slightly before reaching the bottom
+                        loadContent(additionalChunkSize);  // Load more content on scroll
+                    }
+                }, 200);
+            });
+        });
+
+        async function loadContent(chunkSize) {
+            isLoading = true;
+            showLoadingSpinner();
+            try {
+                console.log(`Loading content with chunk size: ${chunkSize}, offset: ${offset}`);
+                const response = await fetch(`/load_content?chunk_size=${chunkSize}&offset=${offset}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const content = await response.json();
+
+                if (!content.length) {
+                    console.log('No more content to load');
+                    return;  // Exit if no more content
+                }
+
+                const newsContainer = document.getElementById('news-container');
+                content.forEach(item => {
+                    const newsDiv = document.createElement('div');
+                    newsDiv.className = 'news';
+                    newsDiv.innerHTML = `
+                        <p id="title">${item.title}</p>
+                        <p id="date">${item.date}</p>
+                        <details>
+                        <summary>Read More...</summary>
+                        <p id="news">${item.news}</p>
+                        </details>
+                        <div class="media" id="media-${item.id}" data-aos="zoo"></div>
+                        <div id="interactions">
+                            <p><i class="fa-solid fa-thumbs-up"></i>like</p>
+                            <P><i class="fa-solid fa-message"></i>comments</p>
+                            <p><i class="fa-solid fa-share-nodes"></i>share</p>
+                            </div>
+                        <div id="user_interactions">
+                            <img id=comment_pic src="{}" alt="image">
+                            <input type="text" name="comment" id="comment" placeholder='write a comment'>
+                        </div>
+                    `;
+                    newsContainer.appendChild(newsDiv);
+
+                    // Load media automatically
+                    loadMedia(item.id);
+                });
+
+                offset += chunkSize;
+            } catch (error) {
+                console.error('Error loading content:', error);
+                alert('Failed to load content. Please try again later.');
+            } finally {
+                isLoading = false;
+                hideLoadingSpinner();
+            }
+        }
+
+        async function loadMedia(contentId) {
+            try {
+                console.log(`Loading media for content ID: ${contentId}`);
+                const response = await fetch(`/load_media/${contentId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const media = await response.json();
+
+                const mediaContainer = document.getElementById(`media-${contentId}`);
+                media.forEach(mediaItem => {
+                    if (mediaItem.type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = mediaItem.content;
+                        mediaContainer.appendChild(img);
+                    } else if (mediaItem.type === 'video') {
+                        const video = document.createElement('video');
+                        video.controls = true;
+                        video.src = mediaItem.content;
+                        mediaContainer.appendChild(video);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading media for content ID', contentId, ':', error);
+            }
+        }
+
+        function showLoadingSpinner() {
+            const spinner = document.getElementById('loading-spinner');
+            spinner.style.display = 'block';
+        }
+
+        function hideLoadingSpinner() {
+            const spinner = document.getElementById('loading-spinner');
+            spinner.style.display = 'none';
+        }
+    </script>
+  
+</body>
+</html>
